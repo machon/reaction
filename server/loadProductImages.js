@@ -66,10 +66,11 @@ function addProductImage(product) {
 
   Promise.await(Media.insert(fileRecord));
   Promise.await(storeFromAttachedBuffer(fileRecord));
+
 }
 
 Hooks.Events.add("afterCoreInit", () => {
-  Products.find({ type: "simple" }).forEach(product => {
+  Products.find({ type: "simple", isDeleted: false }).forEach(product => {
     if (!Promise.await(Media.findOne({ "metadata.productId": product._id }))) {
       addProductImage(product);
     }
